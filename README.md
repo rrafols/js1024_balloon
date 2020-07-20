@@ -4,6 +4,8 @@
 
 ![animated gif preview](./img/js1024_square.gif)
 
+The source code of the entry (unpacked) can be found [here](./demo.js)
+
 # Inspiration
 I stumbled upon the three.js ballooning demo by https://twitter.com/alexanderperrin and wanted to recreate something similar with just 1k (and without external libraries and resources).
 

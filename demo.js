@@ -104,12 +104,14 @@ setInterval(()=>{
             p.push({x: k*N + W*Math.sin(B*f), y:(Math.random()/2+.3*(h>10?10:h))*1050-Q, z: F+B * N, c:0})
         }
 
-        // smooth the points with it's 3 neighbours.
-        // Run this smooth loop 3 times, otherwise results are too rough
+        // smooth the points with it's 3 close neighbours.
+        // this proces is done 3 times, otherwise results are too rough
         for(Z=3;--Z;)
             for(j=0;B>1&&j<N;) {
                 k=A-N+j++
                 p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3
+
+                // assign color index based on height
                 p[k].c=p[k].y<W?2:p[k].y<Q?0:1
             }
     }
