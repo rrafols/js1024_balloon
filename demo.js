@@ -39,7 +39,7 @@ X=[
 ]
 
 // draw function (array, offset, linespan, length, time(for animation), alpha)
-dr=(q,p,m,l,t,A)=>{
+dr=(q,p,m,l,t,A) => {
     // run the loop twice to reuse as much variables and loops as possible
     // the first iteration will do the projection
     // while the second iteration will do the actual rendering
@@ -48,6 +48,7 @@ dr=(q,p,m,l,t,A)=>{
             //if it's water animate it slightly
             K=(q[k].y>=Q?40:0)*Math.sin(j+++t*.06)
             z = q[k].z -t*f+K
+            
             if(g) {
                 // calculate projection
                 q[k].X=F*(q[k].x)/z + a.width/2
@@ -99,17 +100,17 @@ setInterval(()=>{
     for(;(A=p.length)<N*N;B++) {
         // N random points with a central valley limited to '10'.
         // Change the '>10?10' for another value to change the depth
-        for(j=0;j++<N;)
-            k=j-N/2,
+        for(j=N;j--;)
+            k=N/2-j,
             h=N/abs(k),
             p.push({x: k*N + W*sin(B*f), y:(random()/2+.3*(h>10?10:h))*1050-Q, z: F+B * N, c:0})
         
 
         // smooth the points with it's 3 close neighbours.
         // this proces is done 3 times, otherwise results are too rough
-        for(Z=3;--Z;)
-            for(j=0;B>1&&j<N;)
-                k=A-N+j++,
+        for(Z=3;B>1&&--Z;)
+            for(j=N;j--;)
+                k=A-N-j,
                 p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3,
 
                 // assign color index based on height
@@ -125,7 +126,7 @@ setInterval(()=>{
 
     // if any layer went behind the screen, remove one line of points
     // a new one will be randomly generated on next iteration at the back
-    if(Z) p=p.slice(N)
+    Z&&(p=p.slice(N))
 
     // draw the balloon, adding 2 iterations vertically to draw the basket
     // or something similar to a basket ;)
