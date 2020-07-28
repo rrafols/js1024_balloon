@@ -9,9 +9,9 @@
   contextType: 0,
   reassignVars: true,
   varsNotReassigned: "a b c d", // js1024
-  crushGainFactor: 8,
-  crushLengthFactor: 18,
-  crushCopiesFactor: 20,
+  crushGainFactor: 2,
+  crushLengthFactor: 2,
+  crushCopiesFactor: 1,
   crushTiebreakerFactor: 1,
   wrapInSetInterval: false,
   timeVariableName: "t",
@@ -63,7 +63,7 @@ dr=(q,p,m,l,t,A)=>{
                 d=q[k+m].z-q[k].z
                 h=q[k+1].x-q[k].x
                 u=[e-d*(q[k+1].y-q[k].y), d*h, -e*h]
-                u=u.map(e=>e/Math.sqrt(u[0]*u[0]+u[1]*u[1]+u[2]*u[2]))
+                u=u.map(e=>e/Math.hypot(u[0],u[1],u[2]))
                 
                 // factor current color by lighting calc. approx
                 // (40% ambient + 60% lighting)
@@ -81,6 +81,7 @@ dr=(q,p,m,l,t,A)=>{
 }
 
 setInterval(()=>{
+    with(Math) {
     // clear the screen
     c.fillStyle='#28a'
     c.fillRect(0,0,a.width,a.height)
@@ -98,22 +99,22 @@ setInterval(()=>{
     for(;(A=p.length)<N*N;B++) {
         // N random points with a central valley limited to '10'.
         // Change the '>10?10' for another value to change the depth
-        for(j=0;j++<N;){
-            k=j-N/2
-            h=N/Math.abs(k)
-            p.push({x: k*N + W*Math.sin(B*f), y:(Math.random()/2+.3*(h>10?10:h))*1050-Q, z: F+B * N, c:0})
-        }
+        for(j=0;j++<N;)
+            k=j-N/2,
+            h=N/abs(k),
+            p.push({x: k*N + W*sin(B*f), y:(random()/2+.3*(h>10?10:h))*1050-Q, z: F+B * N, c:0})
+        
 
         // smooth the points with it's 3 close neighbours.
         // this proces is done 3 times, otherwise results are too rough
         for(Z=3;--Z;)
-            for(j=0;B>1&&j<N;) {
-                k=A-N+j++
-                p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3
+            for(j=0;B>1&&j<N;)
+                k=A-N+j++,
+                p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3,
 
                 // assign color index based on height
                 p[k].c=p[k].y<W?2:p[k].y<Q?0:1
-            }
+            
     }
 
     // draw slices terrain from farthest to nearest to do a 'natural'
@@ -133,12 +134,12 @@ setInterval(()=>{
             //color would be alternating white/red each vertical stripe
             x=2+n%2
 
-            g=Math.cos(n*f)
-            h=Math.cos(n*f+f)
-            e=Math.sin(n*f)
-            d=Math.sin(n*f+f)
-            s=W*Math.sin(i*f)
-            b=W*Math.sin(i*f+f)
+            g=cos(n*f)
+            h=cos(n*f+f)
+            e=sin(n*f)
+            d=sin(n*f+f)
+            s=W*sin(i*f)
+            b=W*sin(i*f+f)
 
             //generate the points and draw
             dr([{x:s*g,  y:i*T,   z:s*e+V, c:x},
@@ -146,4 +147,4 @@ setInterval(()=>{
                 {x:b*g,  y:i*T+T, z:b*e+V, c:x},
                 {x:b*h,  y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)
         }
-})
+}})
