@@ -27,7 +27,7 @@ N=100
 B=t=0
 S=16
 T=30
-Q=1500
+Q=1450
 f=.2
 
 // draw function (array, offset, linespan, length, time(for animation), alpha)
@@ -93,7 +93,7 @@ setInterval(()=>{
         for(;(A=p.length)<N*N;B++) {
             // N random points with a central valley limited to '10'.
             // Change the '>10?10' for another value to change the depth
-            for(j=N;j--;p.push([k*N + W*sin(B*f), (random()/2+.3*(n>10?10:n))*1050-Q, F+B * N, 0]))
+            for(j=N;j--;p[p.length]=[k*N + W*sin(B*f), (random()/2+.3*(n>10?10:n))*1e3-Q, F+B * N, 0])
                 k=N/2-j,
                 n=N/abs(k)
                 
