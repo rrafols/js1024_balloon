@@ -30,14 +30,6 @@ T=30
 Q=1500
 f=.2
 
-// color list
-// X=[
-//     [W,W,N],    // terrain
-//     [N,W,W],    // water
-//     [W,W,W],    // snow
-//     [W,S,S]     // balloon red color
-// ]
-
 // draw function (array, offset, linespan, length, time(for animation), alpha)
 dr=(q,p,m,l,t,A) => {
     // run the loop twice to reuse as much variables and loops as possible
@@ -90,12 +82,10 @@ setInterval(()=>{
         c.fillRect(0,0,a.width,a.height)
 
         //small cloud! - did not fit under 1k =)
-        // c.fillStyle='#fff'
-        // for(i=S;i;){
+        // c.fillStyle='#fff8'
+        // for(i=S;i;c.fill()){
         //     k=sin(i--*S+t*.0001)
-        //     c.beginPath()
         //     c.arc(N+i*8,N+S*k,T+T*k,0,6)
-        //     c.fill()
         // }
 
         // generate lines of terrain until we have N
@@ -110,13 +100,14 @@ setInterval(()=>{
 
             // smooth the points with it's 3 close neighbours.
             // this proces is done 3 times, otherwise results are too rough
-            for(Z=3;B>2&&--Z;)
+            for(Z=3;B&&--Z;)
                 for(j=N;j--;p[k].c=p[k].y<W?2:p[k].y<Q?0:1)
                     k=A-N-j,
                     p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3
 
                     // assign color index based on height
                     //-- moved to for statement
+                    //p[k].c=p[k].y<W?2:p[k].y<Q?0:1
         }
 
         // draw slices terrain from farthest to nearest to do a 'natural'
@@ -127,13 +118,15 @@ setInterval(()=>{
 
         // if any layer went behind the screen, remove one line of points
         // a new one will be randomly generated on next iteration at the back
-        // terser will move this statement to the for loop below
+        //
+        // terser will move this statement to the for loop below:
+        // for(Z&&(p=p.slice(N));++i<=S;)
         Z&&(p=p.slice(N))
 
         // draw the balloon, adding 2 iterations vertically to draw the basket
         // or something similar to a basket ;)
         for(;++i<=S;)
-            for(n=S;n--;dr([{x:s*g,  y:i*T,   z:s*e+V, c:x}, {x:s*m,  y:i*T,   z:s*d+V, c:x}, {x:b*g,  y:i*T+T, z:b*e+V, c:x}, {x:b*m,  y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)) {
+            for(n=S;n--;dr([{x:s*g, y:i*T, z:s*e+V, c:x}, {x:s*m, y:i*T, z:s*d+V, c:x}, {x:b*g, y:i*T+T, z:b*e+V, c:x}, {x:b*m, y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)) {
                 //color would be alternating white/red each vertical stripe
                 x=2+n%2
 
@@ -146,6 +139,10 @@ setInterval(()=>{
 
                 //generate the points and draw
                 // -- moved to for loop statement
+                // dr([{x:s*g,  y:i*T,   z:s*e+V, c:x},
+                //     {x:s*m,  y:i*T,   z:s*d+V, c:x},
+                //     {x:b*g,  y:i*T+T, z:b*e+V, c:x},
+                //     {x:b*m,  y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)
             }
     }
 })
