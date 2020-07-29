@@ -38,24 +38,25 @@ dr=(q,p,m,l,t,A) => {
     for(g=2;g--;)
         for(j=0,k=p;j<(t?l:g?l:1);k++){
             //if it's water animate it slightly
-            K=(q[k].y>=Q?40:0)*Math.sin(j+++t*.06)
-            z = q[k].z -t*f+K
+            K=(q[k][1]>=Q?40:0)*Math.sin(j+++t*.06)
+            z = q[k][2] -t*f+K
             
+            // will be transformed to g?(...):(...) by terser
             if(g) {
                 // calculate projection
-                q[k].X=F*(q[k].x)/z + a.width/2
-                q[k].Y=F*(q[k].y+K)/z + (t?a.height/2:N)
+                q[k][4]=F*(q[k][0])/z + a.width/2
+                q[k][5]=F*(q[k][1]+K)/z + (t?a.height/2:N)
             } else {
                 // if any quad is behind the field of view enable
                 // to remove one line after all rendering has been done.
                 Z|=z <= N
-                C=q[k].c
+                C=q[k][3]
 
                 // quick & dirty cross product to do lighting calculations
-                e=q[k+m].y-q[k].y
-                d=q[k+m].z-q[k].z
-                u=q[k+1].x-q[k].x
-                u=[e-d*(q[k+1].y-q[k].y), d*u, -e*u]
+                e=q[k+m][1]-q[k][1]
+                d=q[k+m][2]-q[k][2]
+                u=q[k+1][0]-q[k][0]
+                u=[e-d*(q[k+1][1]-q[k][1]), d*u, -e*u]
                 u=u.map(e=>e/Math.hypot(u[0],u[1],u[2]))
                 
                 // factor current color by lighting calc. approx
@@ -66,10 +67,10 @@ dr=(q,p,m,l,t,A) => {
                 c.fillStyle=`hsla( ${(!C?7:C==1?18:'')}0, ${(C==2?0:7)}0%, ${(C==2?90:50)*(.4+.6*(u[0]*f+(t?u[1]:u[1]*f+u[2])))}%, ${A})`
                 
                 c.beginPath()
-                c.lineTo(q[k].X,    q[k].Y)
-                c.lineTo(q[k+1].X,  q[k+1].Y)
-                c.lineTo(q[k+m+1].X,q[k+m+1].Y)
-                c.lineTo(q[k+m].X,  q[k+m].Y)
+                c.lineTo(q[k][4],    q[k][5])
+                c.lineTo(q[k+1][4],  q[k+1][5])
+                c.lineTo(q[k+m+1][4],q[k+m+1][5])
+                c.lineTo(q[k+m][4],  q[k+m][5])
                 c.fill()
             }
         }
@@ -79,7 +80,7 @@ setInterval(()=>{
     with(Math) {
         // clear the screen
         c.fillStyle='#28a'
-        c.fillRect(0,0,a.width,a.height)
+        c.fillRect(0,0,1e4,1e4)
 
         //small cloud! - did not fit under 1k =)
         // c.fillStyle='#fff8'
@@ -92,7 +93,7 @@ setInterval(()=>{
         for(;(A=p.length)<N*N;B++) {
             // N random points with a central valley limited to '10'.
             // Change the '>10?10' for another value to change the depth
-            for(j=N;j--;p.push({x: k*N + W*sin(B*f), y:(random()/2+.3*(n>10?10:n))*1050-Q, z: F+B * N, c:0}))
+            for(j=N;j--;p.push([k*N + W*sin(B*f), (random()/2+.3*(n>10?10:n))*1050-Q, F+B * N, 0]))
                 k=N/2-j,
                 n=N/abs(k)
                 
@@ -101,9 +102,9 @@ setInterval(()=>{
             // smooth the points with it's 3 close neighbours.
             // this proces is done 3 times, otherwise results are too rough
             for(Z=3;B&&--Z;)
-                for(j=N;j--;p[k].c=p[k].y<W?2:p[k].y<Q?0:1)
+                for(j=N;j--;p[k][3]=p[k][1]<W?2:p[k][1]<Q?0:1)
                     k=A-N-j,
-                    p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3
+                    p[k][1]=(p[k][1] + p[k-1][1] + p[k-N][1])/3
 
                     // assign color index based on height
                     //-- moved to for statement
@@ -126,7 +127,7 @@ setInterval(()=>{
         // draw the balloon, adding 2 iterations vertically to draw the basket
         // or something similar to a basket ;)
         for(;++i<=S;)
-            for(n=S;n--;dr([{x:s*g, y:i*T, z:s*e+V, c:x}, {x:s*m, y:i*T, z:s*d+V, c:x}, {x:b*g, y:i*T+T, z:b*e+V, c:x}, {x:b*m, y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)) {
+            for(n=S;n--;dr([[s*g, i*T, s*e+V, x], [s*m, i*T, s*d+V, x], [b*g, i*T+T, b*e+V, x], [b*m, i*T+T, b*d+V, x]],0,2,4,0,1)) {
                 //color would be alternating white/red each vertical stripe
                 x=2+n%2
 
