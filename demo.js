@@ -62,8 +62,8 @@ dr=(q,p,m,l,t,A) => {
                 // quick & dirty cross product to do lighting calculations
                 e=q[k+m].y-q[k].y
                 d=q[k+m].z-q[k].z
-                h=q[k+1].x-q[k].x
-                u=[e-d*(q[k+1].y-q[k].y), d*h, -e*h]
+                u=q[k+1].x-q[k].x
+                u=[e-d*(q[k+1].y-q[k].y), d*u, -e*u]
                 u=u.map(e=>e/Math.hypot(u[0],u[1],u[2]))
                 
                 // factor current color by lighting calc. approx
@@ -83,69 +83,69 @@ dr=(q,p,m,l,t,A) => {
 
 setInterval(()=>{
     with(Math) {
-    // clear the screen
-    c.fillStyle='#28a'
-    c.fillRect(0,0,a.width,a.height)
+        // clear the screen
+        c.fillStyle='#28a'
+        c.fillRect(0,0,a.width,a.height)
 
-    //small cloud! - did not fit under 1k =)
-    // c.fillStyle='rgba(255,255,255,.5)'
-    // for(i=S;i;){
-    //     k=Math.sin(i--*S+t*.0001)
-    //     c.beginPath()
-    //     c.arc(N+i*8,N+S*k,T+T*k,0,6)
-    //     c.fill()
-    // }
+        //small cloud! - did not fit under 1k =)
+        // c.fillStyle='#fff'
+        // for(i=S;i;){
+        //     k=sin(i--*S+t*.0001)
+        //     c.beginPath()
+        //     c.arc(N+i*8,N+S*k,T+T*k,0,6)
+        //     c.fill()
+        // }
 
-    // generate lines of terrain until we have N
-    for(;(A=p.length)<N*N;B++) {
-        // N random points with a central valley limited to '10'.
-        // Change the '>10?10' for another value to change the depth
-        for(j=N;j--;)
-            k=N/2-j,
-            h=N/abs(k),
-            p.push({x: k*N + W*sin(B*f), y:(random()/2+.3*(h>10?10:h))*1050-Q, z: F+B * N, c:0})
-        
-
-        // smooth the points with it's 3 close neighbours.
-        // this proces is done 3 times, otherwise results are too rough
-        for(Z=3;B>1&&--Z;)
+        // generate lines of terrain until we have N
+        for(;(A=p.length)<N*N;B++) {
+            // N random points with a central valley limited to '10'.
+            // Change the '>10?10' for another value to change the depth
             for(j=N;j--;)
-                k=A-N-j,
-                p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3,
-
-                // assign color index based on height
-                p[k].c=p[k].y<W?2:p[k].y<Q?0:1
+                k=N/2-j,
+                n=N/abs(k),
+                p.push({x: k*N + W*sin(B*f), y:(random()/2+.3*(n>10?10:n))*1050-Q, z: F+B * N, c:0})
             
-    }
 
-    // draw slices terrain from farthest to nearest to do a 'natural'
-    // depth sorting
-    // alpha goes from 1 (full opacity) on the front layers to 
-    // 0 (full transparent) on the back layers
-    for(i=A/N-2;i--;) dr(p,i*N,N,N-1,t++,1-i*N/A)
+            // smooth the points with it's 3 close neighbours.
+            // this proces is done 3 times, otherwise results are too rough
+            for(Z=3;B&&--Z;)
+                for(j=N;j--;)
+                    k=A-N-j,
+                    p[k].y=(p[k].y + p[k-1].y + p[k-N].y)/3,
 
-    // if any layer went behind the screen, remove one line of points
-    // a new one will be randomly generated on next iteration at the back
-    Z&&(p=p.slice(N))
-
-    // draw the balloon, adding 2 iterations vertically to draw the basket
-    // or something similar to a basket ;)
-    for(;++i<=S;)
-        for(n=S;n--;){
-            //color would be alternating white/red each vertical stripe
-            x=2+n%2
-
-            g=cos(n*f)
-            h=cos(n*f+f)
-            e=sin(n*f)
-            d=sin(n*f+f)
-            s=W*sin(i*f)
-            b=W*sin(i*f+f)
-
-            //generate the points and draw
-            dr([{x:s*g,  y:i*T,   z:s*e+V, c:x},
-                {x:s*h,  y:i*T,   z:s*d+V, c:x},
-                {x:b*g,  y:i*T+T, z:b*e+V, c:x},
-                {x:b*h,  y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)
+                    // assign color index based on height
+                    p[k].c=p[k].y<W?2:p[k].y<Q?0:1
         }
-}})
+
+        // draw slices terrain from farthest to nearest to do a 'natural'
+        // depth sorting
+        // alpha goes from 1 (full opacity) on the front layers to 
+        // 0 (full transparent) on the back layers
+        for(i=A/N-2;i--;) dr(p,i*N,N,N-1,t++,1-i*N/A)
+
+        // if any layer went behind the screen, remove one line of points
+        // a new one will be randomly generated on next iteration at the back
+        Z&&(p=p.slice(N))
+
+        // draw the balloon, adding 2 iterations vertically to draw the basket
+        // or something similar to a basket ;)
+        for(;++i<=S;)
+            for(n=S;n--;) {
+                //color would be alternating white/red each vertical stripe
+                x=2+n%2
+
+                g=cos(n*f)
+                m=cos(n*f+f)
+                e=sin(n*f)
+                d=sin(n*f+f)
+                s=W*sin(i*f)
+                b=W*sin(i*f+f)
+
+                //generate the points and draw
+                dr([{x:s*g,  y:i*T,   z:s*e+V, c:x},
+                    {x:s*m,  y:i*T,   z:s*d+V, c:x},
+                    {x:b*g,  y:i*T+T, z:b*e+V, c:x},
+                    {x:b*m,  y:i*T+T, z:b*d+V, c:x}],0,2,4,0,1)
+            }
+    }
+})
