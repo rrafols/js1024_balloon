@@ -9,9 +9,9 @@
   contextType: 0,
   reassignVars: true,
   varsNotReassigned: "a b c d", // js1024
-  crushGainFactor: 2,
-  crushLengthFactor: 2,
-  crushCopiesFactor: 1,
+  crushGainFactor: 5,
+  crushLengthFactor: 3,
+  crushCopiesFactor: 2,
   crushTiebreakerFactor: 1,
   wrapInSetInterval: false,
   timeVariableName: "t",
