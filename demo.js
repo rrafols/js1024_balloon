@@ -9,8 +9,8 @@
   contextType: 0,
   reassignVars: true,
   varsNotReassigned: "a b c d", // js1024
-  crushGainFactor: 5,
-  crushLengthFactor: 3,
+  crushGainFactor: 6,
+  crushLengthFactor: 2,
   crushCopiesFactor: 2,
   crushTiebreakerFactor: 1,
   wrapInSetInterval: false,
@@ -86,6 +86,7 @@ setInterval(()=>{
         // c.fillStyle='#fff8'
         // for(i=S;i;c.fill()){
         //     k=sin(i--*S+t*.0001)
+        //     c.beginPath()
         //     c.arc(N+i*8,N+S*k,T+T*k,0,6)
         // }
 
@@ -101,7 +102,7 @@ setInterval(()=>{
 
             // smooth the points with it's 3 close neighbours.
             // this proces is done 3 times, otherwise results are too rough
-            for(Z=3;B&&--Z;)
+            for(Z=3;--Z;)
                 for(j=N;j--;p[k][3]=p[k][1]<W?2:p[k][1]<Q?0:1)
                     k=A-N-j,
                     p[k][1]=(p[k][1] + p[k-1][1] + p[k-N][1])/3
