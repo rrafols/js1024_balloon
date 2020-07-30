@@ -44,12 +44,12 @@ dr=(q,p,m,l,t,A) => {
             // will be transformed to g?(...):(...) by terser
             if(g) {
                 // calculate projection
-                q[k][4]=F*(q[k][0])/z + a.width/2
+                q[k][4]=F*q[k][0]/z + a.width/2
                 q[k][5]=F*(q[k][1]+K)/z + (t?a.height/2:N)
             } else {
                 // if any quad is behind the field of view enable
                 // to remove one line after all rendering has been done.
-                Z|=z <= N
+                Z|=z < N
                 C=q[k][3]
 
                 // quick & dirty cross product to do lighting calculations
