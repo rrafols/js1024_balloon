@@ -3,8 +3,8 @@
 {
   withMath: false,
   hash2DContext: true,
-  hashWebGLContext: true,
-  hashAudioContext: true,
+  hashWebGLContext: false,
+  hashAudioContext: false,
   contextVariableName: "c",
   contextType: 0,
   reassignVars: true,
@@ -14,7 +14,7 @@
   crushCopiesFactor: 2,
   crushTiebreakerFactor: 1,
   wrapInSetInterval: false,
-  timeVariableName: "t",
+  timeVariableName: "",
   useES6: true
 }
 */
@@ -64,7 +64,7 @@ dr=(q,p,m,l,t,A) => {
                 // u=.4+.6*(u[0]*f+(t?u[1]:u[1]*f+u[2]))
                 // C=X[q[k].c]
                 // c.fillStyle='rgba(' + C[0]*u + ',' + C[1]*u + ',' + C[2]*u + ','+A+')')
-                c.fillStyle=`hsla( ${(!C?7:C==1?18:'')}0, ${(C==2?0:7)}0%, ${(C==2?90:50)*(.4+.6*(u[0]*f+(t?u[1]:u[1]*f+u[2])))}%, ${A})`
+                c.fillStyle=`hsla( ${(!C?7:C==1?18:'')}0, ${(C==2?0:7)}0%, ${(C==2?9:5)*(4+6*(u[0]*f+(t?u[1]:u[1]*f+u[2])))}%, ${A})`
                 
                 c.beginPath()
                 c.lineTo(q[k][4],    q[k][5])
@@ -84,10 +84,10 @@ setInterval(()=>{
 
         //small cloud! - did not fit under 1k =)
         // c.fillStyle='#fff8'
-        // for(i=S;i;c.fill()){
-        //     k=sin(i--*S+t*.0001)
+        // for(i=W;i--;c.fill()){
+        //     k=abs(sin(i*f+t*.0001))
         //     c.beginPath()
-        //     c.arc(N+i*8,N+S*k,T+T*k,0,6)
+        //     c.arc(i*T/2,N+S*k*k-T*k/2,T*k,0,6)
         // }
 
         // generate lines of terrain until we have N
