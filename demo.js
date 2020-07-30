@@ -25,7 +25,6 @@ V=650
 W=220
 N=100
 B=t=0
-S=16
 T=30
 Q=1450
 f=.2
@@ -127,8 +126,8 @@ setInterval(()=>{
 
         // draw the balloon, adding 2 iterations vertically to draw the basket
         // or something similar to a basket ;)
-        for(;++i<=S;)
-            for(n=S;n--;dr([[s*g, i*T, s*e+V, x], [s*m, i*T, s*d+V, x], [b*g, i*T+T, b*e+V, x], [b*m, i*T+T, b*d+V, x]],0,2,4,0,1)) {
+        for(;i++<=T/2;)
+            for(n=T/2;n--;dr([[s*g, i*T, s*e+V, x], [s*m, i*T, s*d+V, x], [b*g, i*T+T, b*e+V, x], [b*m, i*T+T, b*d+V, x]],0,2,4,0,1)) {
                 //color would be alternating white/red each vertical stripe
                 x=2+n%2
 
